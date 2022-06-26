@@ -2,7 +2,7 @@ import got, { Got, RequestError } from "got";
 import {
   createContainerInterface,
   ContainerInterface,
-} from "./modules/container.js";
+} from "./controllers/container.js";
 
 interface DockerClient {
   container: ContainerInterface;
