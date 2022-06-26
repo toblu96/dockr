@@ -1,16 +1,12 @@
 import { createDockerClient } from "../src/index.js";
 
-let dockClient = createDockerClient();
+const dockClient = createDockerClient();
 
 async function runLocal() {
-  console.log("hello");
+  let { containers, error } = await dockClient.container.list();
 
-  try {
-    let containers = await dockClient.container.listAll();
-    console.log(containers);
-  } catch (error) {
-    console.error(error);
-  }
+  if (containers) console.log(containers[0]?.Names);
+  console.log(error);
 }
 
 runLocal();

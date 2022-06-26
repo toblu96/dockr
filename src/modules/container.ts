@@ -1,9 +1,27 @@
-import { Got } from "got";
-import { Port, SummaryNetworkSettings, MountPoint } from "../types.js";
+import { Got, RequestError } from "got";
+import {
+  Port,
+  SummaryNetworkSettings,
+  MountPoint,
+  ContainerListOptionsFilter,
+  ErrorResponse,
+} from "../types/index.js";
 
+export type ContainerListParams = {
+  all?: boolean;
+  limit?: number;
+  size?: boolean;
+  filters?: ContainerListOptionsFilter;
+};
 export interface ContainerInterface {
-  list(): string;
-  listAll(): Promise<Container[]>;
+  /**
+   *
+   * @param params
+   */
+  list(params?: ContainerListParams): Promise<ContainerMethodResponse>;
+  create(): Promise<ContainerCreateResponse | ErrorResponse>;
+  inspect(): string;
+  logs(): string;
 }
 
 export interface Container {
@@ -26,18 +44,43 @@ export interface Container {
   Mounts: MountPoint[];
 }
 
-export function createContainerInterface(gotInstance: Got): ContainerInterface {
-  const list = function () {
-    return "hello from container module";
-  };
+export interface ContainerCreateResponse {
+  Id: string;
+  Warnings: string[];
+}
 
-  const listAll = async function () {
-    return (await gotInstance.get("containers/json").json()) as Container[];
+interface ContainerMethodResponse {
+  containers?: Container[];
+  error?: ErrorResponse;
+}
+
+export function createContainerInterface(gotInstance: Got): ContainerInterface {
+  const list = async function (
+    params?: ContainerListParams
+  ): Promise<ContainerMethodResponse> {
+    try {
+      return { containers: await gotInstance.get("containers/json").json() };
+    } catch (error) {
+      const { response, message } = error as RequestError;
+
+      // fill values for normal error cases
+      let _error: ErrorResponse = {
+        code: response?.statusCode || 500,
+        message: response?.statusMessage || message,
+      };
+
+      // handle special cases
+      switch (response?.statusCode) {
+        case 404:
+          _error.message = "Could not find any container";
+          break;
+      }
+      return { error: _error };
+    }
   };
 
   const container: ContainerInterface = {} as ContainerInterface;
   container.list = list;
-  container.listAll = listAll;
 
   return container as ContainerInterface;
 }

@@ -1,33 +1,33 @@
-declare interface Address {
+export interface Address {
   Addr: string;
   PrefixLen: number;
 }
 
-declare interface IPAM {
+export interface IPAM {
   Driver: string;
   Options: { [key: string]: string };
   Config: IPAMConfig[];
 }
 
-declare interface IPAMConfig {
+export interface IPAMConfig {
   Subnet?: string;
   IPRange?: string;
   Gateway?: string;
   AuxiliaryAddresses?: { [key: string]: string };
 }
 
-declare interface EndpointIPAMConfig {
+export interface EndpointIPAMConfig {
   IPv4Address?: string;
   IPv6Address?: string;
   LinkLocalIPs?: string[];
 }
 
-declare interface PeerInfo {
+export interface PeerInfo {
   Name: string;
   IP: string;
 }
 
-declare interface EndpointSettings {
+export interface EndpointSettings {
   IPAMConfig?: EndpointIPAMConfig;
   Links: string[];
   Aliases: string[];
@@ -43,24 +43,24 @@ declare interface EndpointSettings {
   DriverOpts: { [key: string]: string };
 }
 
-declare interface Task {
+export interface Task {
   Name: string;
   EndpointID: string;
   EndpointIP: string;
   Info: { [key: string]: string };
 }
 
-declare interface ServiceInfo {
+export interface ServiceInfo {
   VIP: string;
   Ports: string[];
   LocalLBIndex: number;
   Tasks: Task[];
 }
 
-declare interface NetworkingConfig {
+export interface NetworkingConfig {
   EndpointsConfig: { [key: string]: EndpointSettings | undefined };
 }
 
-declare interface ConfigReference {
+export interface ConfigReference {
   Network: string;
 }

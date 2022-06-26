@@ -1,4 +1,4 @@
-namespace mount {
+export namespace mount {
   export enum Type {
     bind,
     volume,
