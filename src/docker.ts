@@ -3,9 +3,21 @@ import {
   createContainerInterface,
   ContainerInterface,
 } from "./controllers/container.js";
+import {
+  createVolumeInterface,
+  VolumeInterface,
+} from "./controllers/volume.js";
 
 interface DockerClient {
+  /**
+   * Create and manage containers.
+   */
   container: ContainerInterface;
+
+  /**
+   * Create and manage persistent storage that can be attached to containers.
+   */
+  volume: VolumeInterface;
 }
 
 export function createDockerClient(): DockerClient {
@@ -44,6 +56,7 @@ export function createDockerClient(): DockerClient {
 
   const app: DockerClient = {} as DockerClient;
   app.container = createContainerInterface(dockerInstance);
+  app.volume = createVolumeInterface(dockerInstance);
 
   return app as DockerClient;
 }

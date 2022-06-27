@@ -5,6 +5,7 @@ import { mount } from "./mount.js";
 import { EndpointSettings } from "./network.js";
 
 export * from "./container.js";
+export * from "./volume.js";
 export * from "./mount.js";
 export * from "./network.js";
 
@@ -30,6 +31,9 @@ export interface MountPoint {
   Propagation: mount.Propagation;
 }
 
+/**
+ * dockr error response
+ */
 export interface ErrorResponse {
   code: number;
   message: string;
