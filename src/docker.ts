@@ -44,7 +44,8 @@ export function createDockerClient(): DockerClient {
             );
           } else {
             console.error(
-              `❗ [Docker Client] Unexpected error ${response?.statusCode} (${response?.statusMessage}): ${error} `
+              /* @ts-ignore */
+              `❗ [Docker Client] Unexpected error ${response?.statusCode} (${response?.statusMessage}): ${error} \n -> ${response?.body.message} `
             );
           }
 
