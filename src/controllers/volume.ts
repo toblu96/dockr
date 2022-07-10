@@ -36,7 +36,7 @@ export interface VolumeInterface {
    * @param params Volume configuration
    * @returns The volume was created successfully
    */
-  create(params?: VolumeCreateParams): Promise<VolumeCreateResponse>;
+  create(params: VolumeCreateParams): Promise<VolumeCreateResponse>;
   /**
    * Inspect a volume
    * @param params Volume name or ID
@@ -117,16 +117,33 @@ export function createVolumeInterface(gotInstance: Got): VolumeInterface {
   };
 
   volume.create = async function (
-    params?: VolumeCreateParams
+    params: VolumeCreateParams
   ): Promise<VolumeCreateResponse> {
-    // TODO: add logic
-    return { volumes: undefined };
+    // make request
+    try {
+      return {
+        volumes: await gotInstance
+          .post("volumes/create", {
+            json: params.volumeConfig,
+          })
+          .json(),
+      };
+    } catch (error) {
+      const { response, message } = error as RequestError;
+
+      // fill values for normal error cases
+      let _error: ErrorResponse = {
+        code: response?.statusCode || 500,
+        message: response?.statusMessage || message,
+      };
+
+      return { error: _error };
+    }
   };
 
   volume.inspect = async function (
     params: VolumeInspectParams
   ): Promise<VolumeInspectResponse> {
-    // TODO: add logic
     // make request
     try {
       return {
@@ -152,7 +169,6 @@ export function createVolumeInterface(gotInstance: Got): VolumeInterface {
       }
       return { error: _error };
     }
-    return { volumes: undefined };
   };
 
   volume.prune = async function (

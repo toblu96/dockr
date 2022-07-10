@@ -11,8 +11,20 @@ const dockClient = createDockerClient();
 
 // runLocal();
 
-let { volumes, error } = await dockClient.volume.inspect({
-  name: "2daff1f4df364237896f14b9fa6b824c17c868fcb5de1fd594edc979d53cd05c",
+let { volumes, error } = await dockClient.volume.create({
+  volumeConfig: {
+    Name: "config",
+    Driver: "local",
+    DriverOpts: {
+      device: "tmpfs",
+      type: "tmpfs",
+    },
+    Labels: {
+      "some.own.label": "nope",
+      "com.example.some-label": "some-value",
+      "com.example.some-other-label": "some-other-value",
+    },
+  },
 });
 
 if (volumes) {
