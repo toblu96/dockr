@@ -87,7 +87,6 @@ export function createVolumeInterface(gotInstance: Got): VolumeInterface {
     params?.filters?.label ? (filterObj.label = params.filters.label) : "";
     params?.filters?.name ? (filterObj.name = params.filters.name) : "";
 
-    // TODO: implement filters
     // make request
     try {
       let volumeObj: ListVolumeResponseObject = await gotInstance
@@ -110,7 +109,7 @@ export function createVolumeInterface(gotInstance: Got): VolumeInterface {
       // handle special cases
       switch (response?.statusCode) {
         case 404:
-          _error.message = "Could not find any container";
+          _error.message = "Could not find any volumes.";
           break;
       }
       return { error: _error };
