@@ -60,7 +60,7 @@ export interface VolumeInterface {
    *
    * @returns
    */
-  delete(params?: VolumeDeleteParams): Promise<VolumeDeleteResponse>;
+  delete(params: VolumeDeleteParams): Promise<VolumeDeleteResponse>;
 }
 
 interface ListVolumeResponseObject {
@@ -179,10 +179,40 @@ export function createVolumeInterface(gotInstance: Got): VolumeInterface {
   };
 
   volume.delete = async function (
-    params?: VolumeDeleteParams
+    params: VolumeDeleteParams
   ): Promise<VolumeDeleteResponse> {
-    // TODO: add logic
-    return { done: false };
+    // make request
+    try {
+      await gotInstance.delete(`volumes/${params.name}`, {
+        searchParams: {
+          force: params?.force,
+        },
+      });
+
+      return { done: true };
+    } catch (error) {
+      const { response, message } = error as RequestError;
+
+      // fill values for normal error cases
+      let _error: ErrorResponse = {
+        code: response?.statusCode || 500,
+        message: response?.statusMessage || message,
+      };
+
+      // handle special cases
+      switch (response?.statusCode) {
+        case 404:
+          _error.message = "No such volume or volume driver.";
+          break;
+        case 409:
+          _error.message = "Volume is in use and cannot be removed.";
+          break;
+        case 500:
+          _error.message = "Server error.";
+          break;
+      }
+      return { done: false, error: _error };
+    }
   };
 
   return volume as VolumeInterface;

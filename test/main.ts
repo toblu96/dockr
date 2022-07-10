@@ -11,25 +11,14 @@ const dockClient = createDockerClient();
 
 // runLocal();
 
-let { volumes, error } = await dockClient.volume.create({
-  volumeConfig: {
-    Name: "config",
-    Driver: "local",
-    DriverOpts: {
-      device: "tmpfs",
-      type: "tmpfs",
-    },
-    Labels: {
-      "some.own.label": "nope",
-      "com.example.some-label": "some-value",
-      "com.example.some-other-label": "some-other-value",
-    },
-  },
+let { done, error } = await dockClient.volume.delete({
+  name: "hasura",
+  force: false,
 });
 
-if (volumes) {
-  console.log(volumes);
-  console.log(`\n\n ℹ️ Found ${volumes} volumes \n\n`);
+if (done) {
+  console.log(done);
+  console.log(`\n\n ℹ️ Found ${1} volumes \n\n`);
 }
 if (error) console.log(error);
 
