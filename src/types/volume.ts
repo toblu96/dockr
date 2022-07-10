@@ -100,7 +100,33 @@ export interface VolumeListParams {
    *    the presence of a `label` alone or a `label` and a value.
    * - `name=<volume-name>` Matches all or part of a volume name.
    */
-  filters?: string;
+  // filters?: string; // old definition
+  filters?: {
+    /**
+     * When set to `true` (or `1`), returns all
+     * volumes that are not in use by a container. When set to `false`
+     * (or `0`), only volumes that are in use by one or more
+     * containers are returned.
+     */
+    dangling?: true | false;
+    /**
+     * Matches volumes based on their driver.
+     */
+    driver?: string[];
+    /**
+     * Matches volumes based on
+     * the presence of a `label` alone or a `label` and a value.
+     *
+     * @example
+     * label only: `["com.docker.compose.project", ...],`
+     * label with value: `["com.docker.compose.project=projectname", ...],`
+     */
+    label?: string[];
+    /**
+     * Matches all or part of a volume name.
+     */
+    name?: string[];
+  };
 }
 
 export interface VolumeInspectParams {

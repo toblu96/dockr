@@ -2,11 +2,29 @@ import { createDockerClient } from "../src/index.js";
 
 const dockClient = createDockerClient();
 
-async function runLocal() {
-  let { containers, error } = await dockClient.container.list();
+// async function runLocal() {
+//   let { containers, error } = await dockClient.container.list();
 
-  if (containers) console.log(containers[0]?.Names);
-  console.log(error);
+//   if (containers && containers.length > 0) console.log(containers[0]?.Names);
+//   console.log(error);
+// }
+
+// runLocal();
+
+let { volumes, error } = await dockClient.volume.list({
+  filters: {
+    name: ["hasura"],
+    label: ["com.docker.compose.project=hasura"],
+  },
+});
+
+if (volumes && volumes.length > 0) {
+  console.log(volumes);
+  console.log(`\n\n ℹ️ Found ${volumes.length} volumes \n\n`);
 }
+if (error) console.log(error);
 
-runLocal();
+// let filterObj = {};
+// filterObj["name"] = "hello";
+
+// console.log(JSON.stringify([filterObj]));
