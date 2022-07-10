@@ -42,7 +42,7 @@ export interface VolumeInterface {
    * @param params Volume name or ID
    * @returns Volume data
    */
-  inspect(params?: VolumeInspectParams): Promise<VolumeInspectResponse>;
+  inspect(params: VolumeInspectParams): Promise<VolumeInspectResponse>;
   /**
    * Delete unused volumes
    * @param params Filters to process on the prune list, encoded as JSON (a `map[string][]string`).
@@ -124,9 +124,34 @@ export function createVolumeInterface(gotInstance: Got): VolumeInterface {
   };
 
   volume.inspect = async function (
-    params?: VolumeInspectParams
+    params: VolumeInspectParams
   ): Promise<VolumeInspectResponse> {
     // TODO: add logic
+    // make request
+    try {
+      return {
+        volumes: await gotInstance.get(`volumes/${params?.name}`).json(),
+      };
+    } catch (error) {
+      const { response, message } = error as RequestError;
+
+      // fill values for normal error cases
+      let _error: ErrorResponse = {
+        code: response?.statusCode || 500,
+        message: response?.statusMessage || message,
+      };
+
+      // handle special cases
+      switch (response?.statusCode) {
+        case 404:
+          _error.message = "No such volume.";
+          break;
+        case 500:
+          _error.message = "Server error.";
+          break;
+      }
+      return { error: _error };
+    }
     return { volumes: undefined };
   };
 

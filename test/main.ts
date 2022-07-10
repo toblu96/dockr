@@ -11,16 +11,13 @@ const dockClient = createDockerClient();
 
 // runLocal();
 
-let { volumes, error } = await dockClient.volume.list({
-  filters: {
-    name: ["hasura"],
-    label: ["com.docker.compose.project=hasura"],
-  },
+let { volumes, error } = await dockClient.volume.inspect({
+  name: "2daff1f4df364237896f14b9fa6b824c17c868fcb5de1fd594edc979d53cd05c",
 });
 
-if (volumes && volumes.length > 0) {
+if (volumes) {
   console.log(volumes);
-  console.log(`\n\n ℹ️ Found ${volumes.length} volumes \n\n`);
+  console.log(`\n\n ℹ️ Found ${volumes} volumes \n\n`);
 }
 if (error) console.log(error);
 
