@@ -87,7 +87,7 @@ export function createVolumeInterface(gotInstance: Got): VolumeInterface {
     params?.filters?.label ? (filterObj.label = params.filters.label) : "";
     params?.filters?.name ? (filterObj.name = params.filters.name) : "";
 
-    // make request
+    // list request
     try {
       let volumeObj: ListVolumeResponseObject = await gotInstance
         .get("volumes", {
@@ -119,7 +119,7 @@ export function createVolumeInterface(gotInstance: Got): VolumeInterface {
   volume.create = async function (
     params: VolumeCreateParams
   ): Promise<VolumeCreateResponse> {
-    // make request
+    // create request
     try {
       return {
         volumes: await gotInstance
@@ -144,7 +144,7 @@ export function createVolumeInterface(gotInstance: Got): VolumeInterface {
   volume.inspect = async function (
     params: VolumeInspectParams
   ): Promise<VolumeInspectResponse> {
-    // make request
+    // inspect request
     try {
       return {
         volumes: await gotInstance.get(`volumes/${params?.name}`).json(),
@@ -180,7 +180,7 @@ export function createVolumeInterface(gotInstance: Got): VolumeInterface {
     } = {};
     params?.filters?.label ? (filterObj.label = params.filters.label) : "";
 
-    // make request
+    // prune request
     try {
       return {
         volumes: await gotInstance
@@ -207,7 +207,7 @@ export function createVolumeInterface(gotInstance: Got): VolumeInterface {
   volume.delete = async function (
     params: VolumeDeleteParams
   ): Promise<VolumeDeleteResponse> {
-    // make request
+    // delete request
     try {
       await gotInstance.delete(`volumes/${params.name}`, {
         searchParams: {
