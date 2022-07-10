@@ -100,7 +100,6 @@ export interface VolumeListParams {
    *    the presence of a `label` alone or a `label` and a value.
    * - `name=<volume-name>` Matches all or part of a volume name.
    */
-  // filters?: string; // old definition
   filters?: {
     /**
      * When set to `true` (or `1`), returns all
@@ -148,7 +147,17 @@ export interface VolumePruneParams {
    * Available filters:
    * - `label` (`label=<key>`, `label=<key>=<value>`, `label!=<key>`, or `label!=<key>=<value>`) Prune volumes with (or without, in case `label!=...` is used) the specified labels.
    */
-  filters?: string;
+  filters?: {
+    /**
+     * Matches volumes based on
+     * the presence of a `label` alone or a `label` and a value.
+     *
+     * @example
+     * label only: `["com.docker.compose.project", ...],`
+     * label with value: `["com.docker.compose.project=projectname", ...],`
+     */
+    label?: string[];
+  };
 }
 
 export interface VolumeCreateParams {

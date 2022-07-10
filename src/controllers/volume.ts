@@ -174,8 +174,34 @@ export function createVolumeInterface(gotInstance: Got): VolumeInterface {
   volume.prune = async function (
     params?: VolumePruneParams
   ): Promise<VolumePruneResponse> {
-    // TODO: add logic
-    return { volumes: undefined };
+    // map filter params
+    let filterObj: {
+      label?: string[];
+    } = {};
+    params?.filters?.label ? (filterObj.label = params.filters.label) : "";
+
+    // make request
+    try {
+      return {
+        volumes: await gotInstance
+          .post("volumes/prune", {
+            searchParams: {
+              filters: JSON.stringify(filterObj),
+            },
+          })
+          .json(),
+      };
+    } catch (error) {
+      const { response, message } = error as RequestError;
+
+      // fill values for normal error cases
+      let _error: ErrorResponse = {
+        code: response?.statusCode || 500,
+        message: response?.statusMessage || message,
+      };
+
+      return { error: _error };
+    }
   };
 
   volume.delete = async function (

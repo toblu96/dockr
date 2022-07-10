@@ -11,14 +11,15 @@ const dockClient = createDockerClient();
 
 // runLocal();
 
-let { done, error } = await dockClient.volume.delete({
-  name: "hasura",
-  force: false,
+let { volumes, error } = await dockClient.volume.prune({
+  filters: {
+    label: ["com.docker.compose.project=moleculer-demo"],
+  },
 });
 
-if (done) {
-  console.log(done);
-  console.log(`\n\n ℹ️ Found ${1} volumes \n\n`);
+if (volumes) {
+  console.log(volumes);
+  console.log(`\n\n ℹ️ Deleted ${volumes.VolumesDeleted?.length} volumes \n\n`);
 }
 if (error) console.log(error);
 
