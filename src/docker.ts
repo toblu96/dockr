@@ -8,7 +8,7 @@ import {
   VolumeInterface,
 } from "./controllers/volume.js";
 
-interface DockerClient {
+export interface DockerClient {
   /**
    * Create and manage containers.
    */
