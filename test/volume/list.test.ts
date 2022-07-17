@@ -38,7 +38,7 @@ describe("The docker volume function", () => {
     testVolume,
   }) => {
     let { volume, error } = await dockerClient.volume.create({
-      volumeConfig: testVolume,
+      data: testVolume,
     });
 
     expect(volume?.Name).toBe(testVolume.Name);
@@ -101,7 +101,7 @@ describe("The docker volume function", () => {
   }) => {
     // create unused volume
     let { volume, error } = await dockerClient.volume.create({
-      volumeConfig: pruneVolume,
+      data: pruneVolume,
     });
 
     let { volumes: prunedVolumes, error: pruneError } =

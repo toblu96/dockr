@@ -124,7 +124,7 @@ export function createVolumeInterface(gotInstance: Got): VolumeInterface {
       return {
         volume: await gotInstance
           .post("volumes/create", {
-            json: params.volumeConfig,
+            json: params.data,
           })
           .json(),
       };

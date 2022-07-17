@@ -162,7 +162,7 @@ export interface VolumePruneParams {
 
 export interface VolumeCreateParams {
   /** Volume configuration */
-  volumeConfig: VolumeCreateOptions;
+  data: VolumeCreateOptions;
 }
 
 /**
