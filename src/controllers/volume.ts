@@ -122,7 +122,7 @@ export function createVolumeInterface(gotInstance: Got): VolumeInterface {
     // create request
     try {
       return {
-        volumes: await gotInstance
+        volume: await gotInstance
           .post("volumes/create", {
             json: params.volumeConfig,
           })
@@ -147,7 +147,7 @@ export function createVolumeInterface(gotInstance: Got): VolumeInterface {
     // inspect request
     try {
       return {
-        volumes: await gotInstance.get(`volumes/${params?.name}`).json(),
+        volume: await gotInstance.get(`volumes/${params?.name}`).json(),
       };
     } catch (error) {
       const { response, message } = error as RequestError;

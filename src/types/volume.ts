@@ -169,7 +169,7 @@ export interface VolumeCreateParams {
  * VolumeConfig
  * @description Volume configuration
  */
-interface VolumeCreateOptions {
+export interface VolumeCreateOptions {
   /**
    * @description The new volume's name. If not specified, Docker generates a name.
    *
@@ -209,12 +209,12 @@ export interface VolumeListResponse {
 }
 
 export interface VolumeCreateResponse {
-  volumes?: Volume;
+  volume?: Volume;
   error?: ErrorResponse;
 }
 
 export interface VolumeInspectResponse {
-  volumes?: Volume;
+  volume?: Volume;
   error?: ErrorResponse;
 }
 
