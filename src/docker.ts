@@ -1,5 +1,9 @@
 import got, { Got, RequestError } from "got";
 import {
+  createConfigInterface,
+  ConfigInterface,
+} from "./controllers/config.js";
+import {
   createContainerInterface,
   ContainerInterface,
 } from "./controllers/container.js";
@@ -18,6 +22,11 @@ export interface DockerClient {
    * Create and manage persistent storage that can be attached to containers.
    */
   volume: VolumeInterface;
+  /**
+   * Configs are application configurations that can be used by services. Swarm
+   * mode must be enabled for these endpoints to work.
+   */
+  config: ConfigInterface;
 }
 
 export function createDockerClient(): DockerClient {
@@ -58,6 +67,7 @@ export function createDockerClient(): DockerClient {
   const app: DockerClient = {} as DockerClient;
   app.container = createContainerInterface(dockerInstance);
   app.volume = createVolumeInterface(dockerInstance);
+  app.config = createConfigInterface(dockerInstance);
 
   return app as DockerClient;
 }

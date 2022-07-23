@@ -11,17 +11,38 @@ const dockClient = createDockerClient();
 
 // runLocal();
 
-let { volumes, error } = await dockClient.volume.prune({
-  filters: {
-    label: ["com.docker.compose.project=moleculer-demo"],
+// let { configId, error } = await dockClient.config.create({
+//   data: {
+//     Name: "test-config-tbl1",
+//     Data: "nope",
+//     Labels: {
+//       nope: "label3",
+//     },
+//     Templating: {
+//       Name: "example-driver",
+//       Options: {
+//         OptionA: "value3 for driver-specific option A",
+//         OptionB: "value3 for driver-specific option B",
+//       },
+//     },
+//   },
+// });
+// console.log(configId);
+// console.log(error);
+
+let { configs, error } = await dockClient.config.list();
+let { done, error: err1 } = await dockClient.config.update({
+  id: "oenotbao728znu48dc6hv7m5n",
+  version: 5128,
+  data: {
+    Labels: {
+      nope: "project",
+    },
   },
 });
-
-if (volumes) {
-  console.log(volumes);
-  console.log(`\n\n ℹ️ Deleted ${volumes.VolumesDeleted?.length} volumes \n\n`);
-}
-if (error) console.log(error);
+console.log(configs![1]);
+console.log(configs![1].Spec);
+console.log(err1);
 
 // let filterObj = {};
 // filterObj["name"] = "hello";
