@@ -1,4 +1,4 @@
-import { Got, RequestError } from "got";
+import { Got } from "got";
 import {
   Config,
   ConfigCreateParams,

@@ -1,10 +1,11 @@
-import { Got, RequestError } from "got";
+import { Got } from "got";
 import {
   Port,
   SummaryNetworkSettings,
   MountPoint,
   ContainerListOptionsFilter,
   ErrorResponse,
+  GotRequestError,
 } from "../types/index.js";
 
 export type ContainerListParams = {
@@ -67,12 +68,13 @@ export function createContainerInterface(gotInstance: Got): ContainerInterface {
     try {
       return { containers: await gotInstance.get("containers/json").json() };
     } catch (error) {
-      const { response, message } = error as RequestError;
+      const { response, message } = error as GotRequestError;
 
       // fill values for normal error cases
       let _error: ErrorResponse = {
         code: response?.statusCode || 500,
         message: response?.statusMessage || message,
+        description: response?.body.message,
       };
 
       // handle special cases

@@ -1,4 +1,4 @@
-import { Got, RequestError } from "got";
+import { Got } from "got";
 import {
   VolumeListParams,
   ErrorResponse,
@@ -12,6 +12,7 @@ import {
   VolumeListResponse,
   VolumePruneResponse,
   Volume,
+  GotRequestError,
 } from "../types/index.js";
 
 export interface VolumeInterface {
@@ -98,12 +99,13 @@ export function createVolumeInterface(gotInstance: Got): VolumeInterface {
         .json();
       return { volumes: volumeObj.Volumes };
     } catch (error) {
-      const { response, message } = error as RequestError;
+      const { response, message } = error as GotRequestError;
 
       // fill values for normal error cases
       let _error: ErrorResponse = {
         code: response?.statusCode || 500,
         message: response?.statusMessage || message,
+        description: response?.body.message,
       };
 
       // handle special cases
@@ -129,12 +131,13 @@ export function createVolumeInterface(gotInstance: Got): VolumeInterface {
           .json(),
       };
     } catch (error) {
-      const { response, message } = error as RequestError;
+      const { response, message } = error as GotRequestError;
 
       // fill values for normal error cases
       let _error: ErrorResponse = {
         code: response?.statusCode || 500,
         message: response?.statusMessage || message,
+        description: response?.body.message,
       };
 
       return { error: _error };
@@ -150,12 +153,13 @@ export function createVolumeInterface(gotInstance: Got): VolumeInterface {
         volume: await gotInstance.get(`volumes/${params?.name}`).json(),
       };
     } catch (error) {
-      const { response, message } = error as RequestError;
+      const { response, message } = error as GotRequestError;
 
       // fill values for normal error cases
       let _error: ErrorResponse = {
         code: response?.statusCode || 500,
         message: response?.statusMessage || message,
+        description: response?.body.message,
       };
 
       // handle special cases
@@ -192,12 +196,13 @@ export function createVolumeInterface(gotInstance: Got): VolumeInterface {
           .json(),
       };
     } catch (error) {
-      const { response, message } = error as RequestError;
+      const { response, message } = error as GotRequestError;
 
       // fill values for normal error cases
       let _error: ErrorResponse = {
         code: response?.statusCode || 500,
         message: response?.statusMessage || message,
+        description: response?.body.message,
       };
 
       return { error: _error };
@@ -217,12 +222,13 @@ export function createVolumeInterface(gotInstance: Got): VolumeInterface {
 
       return { done: true };
     } catch (error) {
-      const { response, message } = error as RequestError;
+      const { response, message } = error as GotRequestError;
 
       // fill values for normal error cases
       let _error: ErrorResponse = {
         code: response?.statusCode || 500,
         message: response?.statusMessage || message,
+        description: response?.body.message,
       };
 
       // handle special cases
