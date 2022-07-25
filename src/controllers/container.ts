@@ -31,26 +31,6 @@ export interface ContainerInterface {
   logs(): string;
 }
 
-export interface Container {
-  Id: string;
-  Names: string[];
-  Image: string;
-  ImageID: string;
-  Command: string;
-  Created: number;
-  Ports: Port[];
-  SizeRw?: number;
-  SizeRootFs?: number;
-  Labels: { [key: string]: string };
-  State: string;
-  Status: string;
-  HostConfig: {
-    NetworkMode?: string;
-  };
-  NetworkSettings?: SummaryNetworkSettings;
-  Mounts: MountPoint[];
-}
-
 export interface ContainerCreateResponse {
   Id: string;
   Warnings: string[];
